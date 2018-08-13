@@ -80,7 +80,6 @@ public class ScheduleJobController {
             Thread.sleep(10000);
             System.out.println("-------重启任务----------");
             quartzMangerService.resumeJob(scheduleJob);
-            System.out.println("-------暂停五秒----------");
             Thread.sleep(5000);
             quartzMangerService.pauseJob(scheduleJob);
             System.out.println("-------删除任务----------");
