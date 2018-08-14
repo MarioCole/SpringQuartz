@@ -103,4 +103,30 @@ public class QuartzMangerService {
             e.printStackTrace();
         }
     }
+
+    /**
+     * 立即执行一个job，只运行一次
+     * @param jobClass
+     * @param scheduleJob
+     */
+    public void runJobOnce(Class<? extends Job> jobClass, ScheduleJob scheduleJob){
+        try {
+            JobDetail jobDetail = JobBuilder.newJob(jobClass)
+                    .withIdentity(scheduleJob.getJobName(),scheduleJob.getJobGroupName())
+                    .build();
+
+            Trigger trigger = TriggerBuilder.newTrigger()
+                    .withIdentity(scheduleJob.getJobName(),scheduleJob.getJobGroupName())
+                    .startAt(DateBuilder.futureDate(1,DateBuilder.IntervalUnit.SECOND))
+                    .withSchedule(SimpleScheduleBuilder.simpleSchedule().withRepeatCount(0))
+                    .startNow().build();
+
+            scheduler.scheduleJob(jobDetail,trigger);
+            if (!scheduler.isShutdown()){
+                scheduler.start();
+            }
+        } catch (SchedulerException e) {
+            e.printStackTrace();
+        }
+    }
 }

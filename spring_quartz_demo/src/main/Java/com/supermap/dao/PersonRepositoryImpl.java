@@ -65,4 +65,14 @@ public class PersonRepositoryImpl implements PersonRepository {
     public void flush() {
         getCurrentSession().flush();
     }
+
+    @Override
+    public Person getByJobName(String jobName) {
+        return null;
+    }
+
+    @Override
+    public boolean delete(Person entity) {
+        return false;
+    }
 }

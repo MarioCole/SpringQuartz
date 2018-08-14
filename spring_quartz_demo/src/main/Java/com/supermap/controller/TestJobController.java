@@ -75,11 +75,13 @@ public class TestJobController {
             System.out.println("-------开始执行，每秒执行一次----------");
             quartzMangerService.addJob(MyJob1.class,scheduleJob);
             Thread.sleep(10000);
-            System.out.println("-------暂停十秒----------");
+            System.out.println("-------暂停----------");
             quartzMangerService.pauseJob(scheduleJob);
-            Thread.sleep(10000);
+
+            Thread.sleep(5000);
             System.out.println("-------重启任务----------");
-            quartzMangerService.resumeJob(scheduleJob);
+            quartzMangerService.runJobNow(scheduleJob);
+            /*
             Thread.sleep(5000);
             quartzMangerService.pauseJob(scheduleJob);
             System.out.println("-------删除任务----------");
@@ -90,6 +92,7 @@ public class TestJobController {
             scheduleJob.setJobGroupName("hhhhh");
             System.out.println("-------再次开始----------");
             quartzMangerService.addJob(MyJob1.class,scheduleJob);
+            */
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

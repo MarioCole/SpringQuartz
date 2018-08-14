@@ -19,4 +19,8 @@ public interface DomainRepository<T,PK extends Serializable> {
     boolean delete(PK id);
 
     void flush();
+
+    T getByJobName(String jobName);
+
+    boolean delete(T entity);
 }

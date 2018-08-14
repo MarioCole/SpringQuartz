@@ -14,7 +14,6 @@
             var jobName = document.getElementById("jobName");
             var cronExpression = document.getElementById("time");
             jobName = "";
-            jobName = "";
             cronExpression = "";
         }
     </script>
