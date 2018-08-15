@@ -6,6 +6,8 @@ import com.supermap.entity.ScheduleJob;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ScheduleJobServiceImpl implements ScheduleJobService{
     @Autowired
@@ -41,5 +43,10 @@ public class ScheduleJobServiceImpl implements ScheduleJobService{
     @Override
     public boolean deleteScheduleJob(ScheduleJob scheduleJob) {
         return this.scheduleDao.delete(scheduleJob);
+    }
+
+    @Override
+    public List<ScheduleJob> findAll() {
+        return scheduleDao.findAll();
     }
 }

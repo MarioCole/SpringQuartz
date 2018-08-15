@@ -2,6 +2,8 @@ package com.supermap.service;
 
 import com.supermap.entity.ScheduleJob;
 
+import java.util.List;
+
 public interface ScheduleJobService {
     /**
      * 保存一个job
@@ -43,4 +45,6 @@ public interface ScheduleJobService {
      * @return
      */
     boolean deleteScheduleJob(ScheduleJob scheduleJob);
+
+    List<ScheduleJob> findAll();
 }

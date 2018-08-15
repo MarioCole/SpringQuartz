@@ -1,4 +1,4 @@
-package com.supermap.job;
+package com.supermap.job.myjob1;
 
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;

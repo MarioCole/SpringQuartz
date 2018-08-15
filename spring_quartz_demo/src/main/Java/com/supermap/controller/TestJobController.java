@@ -1,7 +1,7 @@
 package com.supermap.controller;
 
 import com.supermap.entity.ScheduleJob;
-import com.supermap.job.MyJob1;
+import com.supermap.job.myjob1.MyJob1;
 import com.supermap.service.QuartzManager.QuartzManager;
 import com.supermap.service.QuartzManager.QuartzMangerService;
 
@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 @Controller
 public class TestJobController {
@@ -96,5 +97,11 @@ public class TestJobController {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    @RequestMapping(value = "testJob5")
+    public void test4(){
+        List<ScheduleJob> scheduleJobServiceAll = scheduleJobService.findAll();
+        System.out.println(scheduleJobServiceAll);
     }
 }

@@ -31,7 +31,12 @@ public class ScheduleJobDaoImpl implements ScheduleDao {
 
     @Override
     public List<ScheduleJob> findAll() {
-        return null;
+        Transaction transaction = getCurrentSession().beginTransaction();
+        String hql = "from ScheduleJob";
+        Query query = getCurrentSession().createQuery(hql);
+        List<ScheduleJob> list = query.list();
+        transaction.commit();
+        return list;
     }
 
     @Override
@@ -45,8 +50,19 @@ public class ScheduleJobDaoImpl implements ScheduleDao {
     }
 
     @Override
-    public void saveOrUpdate(ScheduleJob entity) {
-        getCurrentSession().saveOrUpdate(entity);
+    public void saveOrUpdate(ScheduleJob scheduleJob) {
+        Session session = getCurrentSession();
+        Transaction transaction = session.beginTransaction();
+        ScheduleJob job = (ScheduleJob) session.get(ScheduleJob.class, scheduleJob.getId());
+        if (scheduleJob.getJobState().equals("1")){
+            job.setJobState("0");
+            session.update(job);
+            transaction.commit();
+        }else {
+            job.setJobState("1");
+            session.update(job);
+            transaction.commit();
+        }
     }
 
     @Override
