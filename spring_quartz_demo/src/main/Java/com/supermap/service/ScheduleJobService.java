@@ -47,4 +47,6 @@ public interface ScheduleJobService {
     boolean deleteScheduleJob(ScheduleJob scheduleJob);
 
     List<ScheduleJob> findAll();
+
+
 }

@@ -1,5 +1,7 @@
 package com.supermap.utils.dateToCron;
 
+import org.junit.jupiter.api.Test;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -33,5 +35,11 @@ public class DateToCronUtils {
     public static String getCron(java.util.Date  date){
         String dateFormat="ss mm HH dd MM ? yyyy";
         return formatDateByPattern(date, dateFormat);
+    }
+
+    @Test
+    public void test1(){
+        String cron = getCron(new Date());
+        System.out.println(cron);
     }
 }

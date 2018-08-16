@@ -1,6 +1,7 @@
 package com.supermap.entity;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "ScheduleJob")
@@ -32,9 +33,19 @@ public class ScheduleJob {
     private String jobState;
 
     /**
-     * job所在包 一个job对应一个包
+     * job类型
      */
-    private String jobLocation;
+    private String jobType;
+
+    /**
+     * 开始时间
+     */
+    private Date startDate;
+
+    /**
+     * 结束时间
+     */
+    private Date endDate;
 
     @Id
     @GeneratedValue
@@ -82,13 +93,31 @@ public class ScheduleJob {
         this.jobState = jobState;
     }
 
-    @Column(name = "jobLocation")
-    public String getJobLocation() {
-        return jobLocation;
+    @Column(name = "jobType")
+    public String getJobType() {
+        return jobType;
     }
 
-    public void setJobLocation(String jobLocation) {
-        this.jobLocation = jobLocation;
+    public void setJobType(String jobType) {
+        this.jobType = jobType;
+    }
+
+    @Column(name = "startDate")
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    @Column(name = "endDate")
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 
     @Override
@@ -99,7 +128,9 @@ public class ScheduleJob {
                 ", jobGroupName='" + jobGroupName + '\'' +
                 ", cronExpression='" + cronExpression + '\'' +
                 ", jobState='" + jobState + '\'' +
-                ", jobLocation='" + jobLocation + '\'' +
+                ", jobType='" + jobType + '\'' +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
                 '}';
     }
 }

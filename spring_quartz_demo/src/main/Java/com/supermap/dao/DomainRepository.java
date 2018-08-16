@@ -14,7 +14,7 @@ public interface DomainRepository<T,PK extends Serializable> {
 
     PK save(T entity);
 
-    void saveOrUpdate(T entity);
+    void updateState(T entity);
 
     boolean delete(PK id);
 

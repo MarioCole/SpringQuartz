@@ -62,7 +62,7 @@ public class TestJobController {
         scheduleJob.setJobName("heke");
         scheduleJob.setJobGroupName("heke1");
         scheduleJob.setCronExpression("0/2 * * * * ?");
-        quartzMangerService.addJob(MyJob1.class,scheduleJob);
+        quartzMangerService.addJob(scheduleJob);
         scheduleJobService.saveScheduleJob(scheduleJob);
     }
 
@@ -74,7 +74,7 @@ public class TestJobController {
         scheduleJob.setCronExpression("0/1 * * * * ?");
         try {
             System.out.println("-------开始执行，每秒执行一次----------");
-            quartzMangerService.addJob(MyJob1.class,scheduleJob);
+            quartzMangerService.addJob(scheduleJob);
             Thread.sleep(10000);
             System.out.println("-------暂停----------");
             quartzMangerService.pauseJob(scheduleJob);

@@ -1,21 +1,19 @@
 package com.supermap.controller;
 
 import com.supermap.entity.ScheduleJob;
-import com.supermap.job.myjob1.MyJob1;
 import com.supermap.service.QuartzManager.QuartzMangerService;
 import com.supermap.service.ScheduleJobService;
-import com.supermap.utils.classUtils.ClassTools;
-import com.supermap.utils.classUtils.ClassUtils;
-import org.quartz.Job;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 @Controller
 public class ScheduleJobController {
@@ -35,18 +33,37 @@ public class ScheduleJobController {
      */
     @RequestMapping(value = "addJob",method = RequestMethod.GET)
     public String addJob(@RequestParam(value = "jobName") String jobName,
-                       @RequestParam(value = "cronExpression") String cronExpression,
-                         @RequestParam(value = "jobLocation") String jobLocation,
+                         @RequestParam(value = "cronExpression") String cronExpression,
+                         @RequestParam(value = "jobType") String jobType,
+                         @RequestParam(value = "startYear") String startYear,
+                         @RequestParam(value = "startMonth") String startMonth,
+                         @RequestParam(value = "startDay") String startDay,
+                         @RequestParam(value = "endYear") String endYear,
+                         @RequestParam(value = "endMonth") String endMonth,
+                         @RequestParam(value = "endDay") String endDay,
                          Map<String,Object> map){
+        String startTime = startYear + "-" + startMonth + "-" + startDay;
+        String endTime = endYear + "-" + endMonth + "-" + endDay;
         ScheduleJob scheduleJob = new ScheduleJob();
+        SimpleDateFormat format =   new SimpleDateFormat( "yyyy-MM-dd" );
+
+        try {
+            Date startDate = format.parse(startTime);
+            Date endDate = format.parse(endTime);
+            scheduleJob.setStartDate(startDate);
+            scheduleJob.setEndDate(endDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
         scheduleJob.setCronExpression(cronExpression);
         scheduleJob.setJobName(jobName);
         scheduleJob.setJobGroupName(jobName);
-        scheduleJob.setJobLocation(jobLocation);
+        scheduleJob.setJobType(jobType);
         scheduleJob.setJobState("1");
+
         scheduleJobService.saveScheduleJob(scheduleJob);
-        
-        quartzMangerService.addJob(MyJob1.class,scheduleJob);
+        quartzMangerService.addJob(scheduleJob);
         map.put("message","添加成功");
         return "message";
     }
@@ -60,9 +77,24 @@ public class ScheduleJobController {
     public String runJobNow(@RequestParam(value = "jobName") String jobName,
                             Map<String,Object> map){
         ScheduleJob scheduleJobByJobName = scheduleJobService.getScheduleJobByJobName(jobName);
-        quartzMangerService.runJobOnce(MyJob1.class,scheduleJobByJobName);
+
+        ScheduleJob scheduleJob = new ScheduleJob();
+        scheduleJob.setId(scheduleJobByJobName.getId());
+        scheduleJob.setJobName(scheduleJobByJobName.getJobName());
+        scheduleJob.setJobGroupName(scheduleJobByJobName.getJobGroupName());
+        scheduleJob.setCronExpression(scheduleJobByJobName.getCronExpression());
+        scheduleJob.setJobState("1");
+        scheduleJob.setJobType(scheduleJobByJobName.getJobType());
+        scheduleJob.setStartDate(scheduleJobByJobName.getStartDate());
+        scheduleJob.setEndDate(scheduleJobByJobName.getEndDate());
+
+        quartzMangerService.deleteJob(scheduleJobByJobName);
+        scheduleJobService.deleteScheduleJob(scheduleJobByJobName);
+
+        scheduleJobService.saveScheduleJob(scheduleJob);
+        quartzMangerService.runJobOnce(scheduleJob);
         //quartzManager.runAJobNow(jobName,jobName);
-        System.out.println(scheduleJobByJobName);
+        System.out.println(scheduleJob);
         map.put("message","正在执行");
         return "message";
     }
@@ -120,20 +152,30 @@ public class ScheduleJobController {
      * @param jobName
      * @return
      */
-    @RequestMapping(value = "updateJobCron",method = RequestMethod.GET)
-    public String updateJobCron(@RequestParam(value = "jobName") String jobName,
-                                @RequestParam(value = "cronExpression") String cronExpression){
+    @RequestMapping(value = "updateJob",method = RequestMethod.GET)
+    public String updateJob(@RequestParam(value = "jobName") String jobName,
+                            @RequestParam(value = "cronExpression") String cronExpression,
+                            @RequestParam(value = "jobType") String jobType,
+                            Map<String,Object> map){
+       ScheduleJob scheduleJob = new ScheduleJob();
+       scheduleJob.setJobName(jobName);
+       scheduleJob.setJobGroupName(jobName);
+       scheduleJob.setCronExpression(cronExpression);
+       scheduleJob.setJobType(jobType);
+       scheduleJob.setJobState("1");
+       scheduleJobService.saveScheduleJob(scheduleJob);
+       quartzMangerService.addJob(scheduleJob);
+
+       map.put("message","修改成功");
+       return "message";
+    }
+
+    @RequestMapping(value = "deleteBeforeUpdate")
+    public String deleteBeforeUpdate(@RequestParam(value = "jobName") String jobName){
         ScheduleJob scheduleJobByJobName = scheduleJobService.getScheduleJobByJobName(jobName);
         quartzMangerService.deleteJob(scheduleJobByJobName);
         scheduleJobService.deleteScheduleJob(scheduleJobByJobName);
-        ScheduleJob scheduleJob = new ScheduleJob();
-        scheduleJob.setJobName(jobName);
-        scheduleJob.setJobGroupName(jobName);
-        scheduleJob.setCronExpression(cronExpression);
-        quartzMangerService.addJob(MyJob1.class,scheduleJob);
-        scheduleJobService.saveScheduleJob(scheduleJob);
-        System.out.println(scheduleJob);
-        return null;
+        return "addJob";
     }
 
     /**

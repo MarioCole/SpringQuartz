@@ -22,10 +22,8 @@ public class ClassTools {
         Set<Class<?>> classes = getClasses(packageName);
         if (classes != null) {
             for (Class className : classes) {
-                //System.out.println(className);
-                Class<? extends Job> aClass = (Class<? extends Job>) classes.getClass();
-                System.out.println(aClass.getClass());
-                System.out.println(MyJob1.class);
+                Class<? extends Class> aClass = className.getClass();
+                System.out.println(aClass);
             }
         }
     }

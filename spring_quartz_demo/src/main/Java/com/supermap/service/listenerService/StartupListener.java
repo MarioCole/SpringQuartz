@@ -1,17 +1,15 @@
 package com.supermap.service.listenerService;
 
 import com.supermap.entity.ScheduleJob;
+import com.supermap.job.myjob1.MyJob1;
 import com.supermap.service.QuartzManager.QuartzMangerService;
 import com.supermap.service.ScheduleJobService;
-import com.supermap.utils.classUtils.ClassTools;
-import org.quartz.Job;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class StartupListener implements ApplicationListener<ContextRefreshedEvent> {
@@ -33,9 +31,7 @@ public class StartupListener implements ApplicationListener<ContextRefreshedEven
         for (ScheduleJob scheduleJob: scheduleJobServiceAll) {
             ScheduleJob scheduleJobByJobName = scheduleJobService.getScheduleJobByJobName(scheduleJob.getJobName());
             if (scheduleJobByJobName.getJobState().equals("1")) {
-                Set<Class<?>> classes = ClassTools.getClasses(scheduleJobByJobName.getJobLocation());
-                Class<? extends Set> aClass = classes.getClass();
-                quartzMangerService.addJob((Class<? extends Job>) aClass, scheduleJobByJobName);
+                quartzMangerService.addJob(scheduleJobByJobName);
             }
         }
     }

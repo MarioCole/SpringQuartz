@@ -49,7 +49,7 @@ public class PersonRepositoryImpl implements PersonRepository {
     }
 
     @Override
-    public void saveOrUpdate(Person entity) {
+    public void updateState(Person entity) {
 
         getCurrentSession().saveOrUpdate(entity);
     }

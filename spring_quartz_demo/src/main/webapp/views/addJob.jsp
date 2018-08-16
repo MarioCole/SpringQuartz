@@ -13,16 +13,16 @@
         function reset() {
             var jobName = document.getElementById("jobName");
             var cronExpression = document.getElementById("time");
-            var jobLocation = document.getElementById("jobLocation");
+            var jobType = document.getElementById("jobType");
             jobName = "";
             cronExpression = "";
-            jobLocation = "";
+            jobType = "";
         }
     </script>
 </head>
 <body>
 <form action="/addJob" method="get">
-    <table>
+    <table border="0">
         <tr>
             <td>任务名称</td>
             <td><input type="text" id="jobName" name="jobName"/></td>
@@ -32,8 +32,20 @@
             <td><input type="text" id="cronExpression" name="cronExpression"/></td>
         </tr>
         <tr>
-            <td>job路径</td>
-            <td><input type="text" id="jobLocation" name="jobLocation"/></td>
+            <td>类型</td>
+            <td><input type="text" id="jobType" name="jobType"/></td>
+        </tr>
+        <tr>
+            <td>开始时间</td>
+            <td colspan="3"><input type="text" name="startYear"/>年</td>
+            <td><input type="text" name="startMonth"/>月</td>
+            <td><input type="text" name="startDay"/>日</td>
+        </tr>
+        <tr>
+            <td>结束时间</td>
+            <td colspan="3"><input type="text" name="endYear"/>年</td>
+            <td><input type="text" name="endMonth"/>月</td>
+            <td><input type="text" name="endDay"/>日</td>
         </tr>
         <tr>
             <td><input type="submit" value="提交任务" id="submit"/></td>

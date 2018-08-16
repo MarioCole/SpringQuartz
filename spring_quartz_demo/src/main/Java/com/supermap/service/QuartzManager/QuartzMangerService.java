@@ -2,9 +2,12 @@ package com.supermap.service.QuartzManager;
 
 
 import com.supermap.entity.ScheduleJob;
+import com.supermap.job.myjob1.MyJob1;
 import org.quartz.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Date;
 
 @Service
 public class QuartzMangerService {
@@ -13,20 +16,24 @@ public class QuartzMangerService {
 
     /**
      * 增加一个job
-     * @param jobClass
      * @param scheduleJob
      */
-    public void addJob(Class<? extends Job> jobClass, ScheduleJob scheduleJob){
+    public void addJob(ScheduleJob scheduleJob){
         try {
-        JobDetail jobDetail = JobBuilder.newJob(jobClass)
+            long startTime = scheduleJob.getStartDate().getTime();
+            long endTime = scheduleJob.getEndDate().getTime();
+
+            JobDetail jobDetail = JobBuilder.newJob(getJobClass(scheduleJob))
                 .withIdentity(scheduleJob.getJobName(),scheduleJob.getJobGroupName())
                 .build();
 
-        Trigger trigger = TriggerBuilder.newTrigger()
+            Trigger trigger = TriggerBuilder.newTrigger()
                 .withIdentity(scheduleJob.getJobName(),scheduleJob.getJobGroupName())
-                .startAt(DateBuilder.futureDate(1,DateBuilder.IntervalUnit.SECOND))
+                .startAt(new Date().getTime()<startTime?scheduleJob.getStartDate():new Date())
                 .withSchedule(CronScheduleBuilder.cronSchedule(scheduleJob.getCronExpression()))
-                .startNow().build();
+                    .endAt(scheduleJob.getEndDate())
+                .startNow()
+                    .build();
 
             scheduler.scheduleJob(jobDetail,trigger);
             if (!scheduler.isShutdown()){
@@ -35,6 +42,14 @@ public class QuartzMangerService {
         } catch (SchedulerException e) {
             e.printStackTrace();
         }
+    }
+
+    public Class<? extends Job> getJobClass(ScheduleJob scheduleJob){
+        switch (scheduleJob.getJobType()){
+            case "myjob1":
+                return MyJob1.class;
+        }
+        return null;
     }
 
     /**
@@ -106,12 +121,11 @@ public class QuartzMangerService {
 
     /**
      * 立即执行一个job，只运行一次
-     * @param jobClass
      * @param scheduleJob
      */
-    public void runJobOnce(Class<? extends Job> jobClass, ScheduleJob scheduleJob){
+    public void runJobOnce(ScheduleJob scheduleJob){
         try {
-            JobDetail jobDetail = JobBuilder.newJob(jobClass)
+            JobDetail jobDetail = JobBuilder.newJob(getJobClass(scheduleJob))
                     .withIdentity(scheduleJob.getJobName(),scheduleJob.getJobGroupName())
                     .build();
 

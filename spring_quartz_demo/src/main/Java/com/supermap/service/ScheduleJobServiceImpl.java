@@ -20,7 +20,7 @@ public class ScheduleJobServiceImpl implements ScheduleJobService{
 
     @Override
     public void updateScheduleJob(ScheduleJob scheduleJob) {
-        this.scheduleDao.saveOrUpdate(scheduleJob);
+        this.scheduleDao.updateState(scheduleJob);
     }
 
     @Override

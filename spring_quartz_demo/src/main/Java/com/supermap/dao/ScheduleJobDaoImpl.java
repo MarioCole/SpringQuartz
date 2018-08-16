@@ -50,7 +50,7 @@ public class ScheduleJobDaoImpl implements ScheduleDao {
     }
 
     @Override
-    public void saveOrUpdate(ScheduleJob scheduleJob) {
+    public void updateState(ScheduleJob scheduleJob) {
         Session session = getCurrentSession();
         Transaction transaction = session.beginTransaction();
         ScheduleJob job = (ScheduleJob) session.get(ScheduleJob.class, scheduleJob.getId());
@@ -64,6 +64,7 @@ public class ScheduleJobDaoImpl implements ScheduleDao {
             transaction.commit();
         }
     }
+
 
     @Override
     public boolean delete(Long id) {
