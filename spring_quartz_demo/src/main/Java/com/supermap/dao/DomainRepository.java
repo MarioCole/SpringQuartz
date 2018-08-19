@@ -16,6 +16,8 @@ public interface DomainRepository<T,PK extends Serializable> {
 
     void updateState(T entity);
 
+    void updateJob(T entity);
+
     boolean delete(PK id);
 
     void flush();

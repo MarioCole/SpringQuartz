@@ -22,14 +22,15 @@
 </head>
 <body>
 <form action="/addJob" method="get">
-    <table border="0">
+    <table border="1">
         <tr>
             <td>任务名称</td>
             <td><input type="text" id="jobName" name="jobName"/></td>
         </tr>
         <tr>
             <td>执行时间</td>
-            <td><input type="text" id="cronExpression" name="cronExpression"/></td>
+            <td colspan="2"><input type="text" id="cronExpression" name="cronExpression"/></td>
+            <td><a href="cron.html" target="main">生成cron表达式</a></td>
         </tr>
         <tr>
             <td>类型</td>

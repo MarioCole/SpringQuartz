@@ -110,7 +110,7 @@ public class ScheduleJobController {
         ScheduleJob scheduleJobByJobName = scheduleJobService.getScheduleJobByJobName(jobName);
         String jobState = scheduleJobByJobName.getJobState();
         System.out.println(jobState);
-        scheduleJobService.updateScheduleJob(scheduleJobByJobName);
+        scheduleJobService.updateScheduleJobState(scheduleJobByJobName);
         quartzMangerService.pauseJob(scheduleJobByJobName);
         map.put("message","任务已暂停");
         return "message";
@@ -125,9 +125,43 @@ public class ScheduleJobController {
     public String resumeJob(@RequestParam(value = "jobName") String jobName,
                             Map<String,Object> map){
         ScheduleJob scheduleJobByJobName = scheduleJobService.getScheduleJobByJobName(jobName);
-        scheduleJobService.updateScheduleJob(scheduleJobByJobName);
+        scheduleJobService.updateScheduleJobState(scheduleJobByJobName);
         quartzMangerService.resumeJob(scheduleJobByJobName);
         map.put("message","任务已恢复");
+        return "message";
+    }
+
+    @RequestMapping(value = "updateJob",method = RequestMethod.GET)
+    public String updateJob(@RequestParam(value = "id") Long id,
+                            @RequestParam(value = "jobName") String jobName,
+                            @RequestParam(value = "cronExpression") String cronExpression,
+                            @RequestParam(value = "jobType") String jobType,
+                            @RequestParam(value = "startYear") String startYear,
+                            @RequestParam(value = "startMonth") String startMonth,
+                            @RequestParam(value = "startDay") String startDay,
+                            @RequestParam(value = "endYear") String endYear,
+                            @RequestParam(value = "endMonth") String endMonth,
+                            @RequestParam(value = "endDay") String endDay,
+                            Map<String,Object> map){
+        ScheduleJob scheduleJobById = scheduleJobService.getScheduleJobById(id);
+        String startTime = startYear + "-" + startMonth + "-" + startDay;
+        String endTime = endYear + "-" + endMonth + "-" + endDay;
+        ScheduleJob scheduleJob = new ScheduleJob();
+        SimpleDateFormat format =   new SimpleDateFormat( "yyyy-MM-dd" );
+
+        try {
+            Date startDate = format.parse(startTime);
+            Date endDate = format.parse(endTime);
+            scheduleJobById.setStartDate(startDate);
+            scheduleJobById.setEndDate(endDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        scheduleJobById.setJobName(jobName);
+        scheduleJobById.setCronExpression(cronExpression);
+        scheduleJobById.setJobType(jobType);
+        scheduleJobService.updateScheduleJob(scheduleJobById);
+        map.put("message","任务已更新");
         return "message";
     }
 
@@ -148,28 +182,10 @@ public class ScheduleJobController {
     }
 
     /**
-     * 修改一个job的cron表达式
+     * 修改前删除
      * @param jobName
      * @return
      */
-    @RequestMapping(value = "updateJob",method = RequestMethod.GET)
-    public String updateJob(@RequestParam(value = "jobName") String jobName,
-                            @RequestParam(value = "cronExpression") String cronExpression,
-                            @RequestParam(value = "jobType") String jobType,
-                            Map<String,Object> map){
-       ScheduleJob scheduleJob = new ScheduleJob();
-       scheduleJob.setJobName(jobName);
-       scheduleJob.setJobGroupName(jobName);
-       scheduleJob.setCronExpression(cronExpression);
-       scheduleJob.setJobType(jobType);
-       scheduleJob.setJobState("1");
-       scheduleJobService.saveScheduleJob(scheduleJob);
-       quartzMangerService.addJob(scheduleJob);
-
-       map.put("message","修改成功");
-       return "message";
-    }
-
     @RequestMapping(value = "deleteBeforeUpdate")
     public String deleteBeforeUpdate(@RequestParam(value = "jobName") String jobName){
         ScheduleJob scheduleJobByJobName = scheduleJobService.getScheduleJobByJobName(jobName);

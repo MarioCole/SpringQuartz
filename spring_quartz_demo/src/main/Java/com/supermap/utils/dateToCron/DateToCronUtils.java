@@ -33,13 +33,22 @@ public class DateToCronUtils {
      * @return
      */
     public static String getCron(java.util.Date  date){
-        String dateFormat="ss mm HH dd MM ? yyyy";
+        String dateFormat="ss mm HH dd MM ?";
         return formatDateByPattern(date, dateFormat);
     }
 
     @Test
     public void test1(){
         String cron = getCron(new Date());
+        System.out.println(cron);
+    }
+
+    @Test
+    public void testFromatStringToDate(){
+        String date = "00-00 10:10:10";
+        String format = "MM-dd HH:mm:ss";
+        Date date1 = formatStringToDate(date, format);
+        String cron = getCron(date1);
         System.out.println(cron);
     }
 }

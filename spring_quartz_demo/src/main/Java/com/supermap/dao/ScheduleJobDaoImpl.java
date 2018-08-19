@@ -65,6 +65,15 @@ public class ScheduleJobDaoImpl implements ScheduleDao {
         }
     }
 
+    @Override
+    public void updateJob(ScheduleJob scheduleJob) {
+        Session session = getCurrentSession();
+        Transaction transaction = session.beginTransaction();
+        ScheduleJob job = (ScheduleJob) session.get(ScheduleJob.class, scheduleJob.getId());
+        session.update(job);
+        transaction.commit();
+    }
+
 
     @Override
     public boolean delete(Long id) {

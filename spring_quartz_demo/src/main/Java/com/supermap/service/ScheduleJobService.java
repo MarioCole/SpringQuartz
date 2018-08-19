@@ -13,9 +13,11 @@ public interface ScheduleJobService {
     Long saveScheduleJob(ScheduleJob scheduleJob);
 
     /**
-     * 更新一个job
+     * 更新一个job的状态
      * @param scheduleJob
      */
+    void updateScheduleJobState(ScheduleJob scheduleJob);
+
     void updateScheduleJob(ScheduleJob scheduleJob);
 
     /**

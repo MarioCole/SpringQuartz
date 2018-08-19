@@ -3,6 +3,8 @@ package com.supermap.service;
 
 import com.supermap.dao.ScheduleDao;
 import com.supermap.entity.ScheduleJob;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,8 +21,13 @@ public class ScheduleJobServiceImpl implements ScheduleJobService{
     }
 
     @Override
-    public void updateScheduleJob(ScheduleJob scheduleJob) {
+    public void updateScheduleJobState(ScheduleJob scheduleJob) {
         this.scheduleDao.updateState(scheduleJob);
+    }
+
+    @Override
+    public void updateScheduleJob(ScheduleJob scheduleJob) {
+        this.scheduleDao.updateJob(scheduleJob);
     }
 
     @Override

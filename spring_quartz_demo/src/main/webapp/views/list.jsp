@@ -15,7 +15,7 @@
 </head>
 <body>
     任务列表：
-    <table>
+    <table border="1">
         <tr>
             <td>任务名称</td>
             <td>执行时间</td>

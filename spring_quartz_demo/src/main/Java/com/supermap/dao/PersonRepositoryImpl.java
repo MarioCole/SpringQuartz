@@ -55,6 +55,11 @@ public class PersonRepositoryImpl implements PersonRepository {
     }
 
     @Override
+    public void updateJob(Person entity) {
+
+    }
+
+    @Override
     public boolean delete(Long id) {
         Person person = load(id);
         getCurrentSession().delete(person);
