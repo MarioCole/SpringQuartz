@@ -19,4 +19,21 @@ public class TestDate {
             e.printStackTrace();
         }
     }
+
+    @Test
+    public void testReplaceString(){
+        //String model = "* * * * * ?";
+        String ss = "0/1";
+        String mm = "5";
+        String HH = "1";
+        String dd = "12";
+        String MM = "8";
+
+        StringBuilder replace = null;
+        if (ss != null){
+            StringBuilder stringBuilder = new StringBuilder("*  *  *  *  *  ?");
+            replace = stringBuilder.replace(0, 1, ss);
+            System.out.println(replace);
+        }
+    }
 }
