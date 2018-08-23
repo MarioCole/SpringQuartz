@@ -3,17 +3,18 @@ package com.supermap.service.QuartzManager;
 
 import com.supermap.entity.ScheduleJob;
 import com.supermap.job.myjob1.MyJob1;
+import com.supermap.job.myjob1.MyJob2;
 import org.quartz.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
-import java.util.Queue;
 
 @Service
 public class QuartzMangerService {
     @Autowired
     private Scheduler scheduler;
+
 
     /**
      * 增加一个job
@@ -33,11 +34,11 @@ public class QuartzMangerService {
                 .startAt(new Date().getTime()<startTime?scheduleJob.getStartDate():new Date())
                 .withSchedule(CronScheduleBuilder.cronSchedule(scheduleJob.getCronExpression()))
                     .endAt(scheduleJob.getEndDate())
-                .startNow()
+                //.startNow()
                     .build();
-
             scheduler.scheduleJob(jobDetail,trigger);
             if (!scheduler.isShutdown()){
+                //exDataJob.run();
                 scheduler.start();
             }
         } catch (SchedulerException e) {
@@ -47,8 +48,13 @@ public class QuartzMangerService {
 
     public Class<? extends Job> getJobClass(ScheduleJob scheduleJob){
         switch (scheduleJob.getJobType()){
-            case "myjob1":
+            case "myjob1":{
                 return MyJob1.class;
+            }
+            case "myjob2":{
+                return MyJob2.class;
+            }
+
         }
         return null;
     }

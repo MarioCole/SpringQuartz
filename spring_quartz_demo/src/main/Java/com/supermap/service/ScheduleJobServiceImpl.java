@@ -3,15 +3,14 @@ package com.supermap.service;
 
 import com.supermap.dao.ScheduleDao;
 import com.supermap.entity.ScheduleJob;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+import com.supermap.service.ScheduleJobService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class ScheduleJobServiceImpl implements ScheduleJobService{
+public class ScheduleJobServiceImpl implements ScheduleJobService {
     @Autowired
     private ScheduleDao scheduleDao;
 

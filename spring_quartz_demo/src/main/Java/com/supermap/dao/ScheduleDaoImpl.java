@@ -1,5 +1,6 @@
 package com.supermap.dao;
 
+import com.supermap.dao.ScheduleDao;
 import com.supermap.entity.ScheduleJob;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class ScheduleJobDaoImpl implements ScheduleDao {
+public class ScheduleDaoImpl implements ScheduleDao {
     @Autowired
     private SessionFactory sessionFactory;
 

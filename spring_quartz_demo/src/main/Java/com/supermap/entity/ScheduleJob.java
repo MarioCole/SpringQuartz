@@ -2,6 +2,8 @@ package com.supermap.entity;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "ScheduleJob")
@@ -46,6 +48,8 @@ public class ScheduleJob {
      * 结束时间
      */
     private Date endDate;
+
+    //private Set<RunnableJob> runnableJobs;
 
     @Id
     @GeneratedValue
@@ -119,6 +123,19 @@ public class ScheduleJob {
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
+
+    /*
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "Schedule_Runnable",
+            joinColumns = @JoinColumn(name = "schedule_id"),
+            inverseJoinColumns = @JoinColumn(name = "runnable_id"))
+    public Set<RunnableJob> getRunnableJobs() {
+        return runnableJobs;
+    }
+
+    public void setRunnableJobs(Set<RunnableJob> runnableJobs) {
+        this.runnableJobs = runnableJobs;
+    }*/
 
     @Override
     public String toString() {

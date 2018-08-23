@@ -1,7 +1,6 @@
 package com.supermap.service.listenerService;
 
 import com.supermap.entity.ScheduleJob;
-import com.supermap.job.myjob1.MyJob1;
 import com.supermap.service.QuartzManager.QuartzMangerService;
 import com.supermap.service.ScheduleJobService;
 import org.springframework.beans.factory.annotation.Autowired;
