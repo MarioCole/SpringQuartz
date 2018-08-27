@@ -26,10 +26,18 @@ public class MyJob2 implements Job {
         System.out.println("MyJob2 的运行 ：" + dateFormat.format(new Date()));
 
         queueUtils.insertRunable(testRunnableJob1,variableQueue);
-        queueUtils.insertRunable(testRunnableJob2,variableQueue);
+        //queueUtils.insertRunable(testRunnableJob2,variableQueue);
 
         queueUtils.start(variableQueue);
         queueUtils.getJob(variableQueue);
+
+        try {
+            Thread.sleep(10*1000);
+            queueUtils.insertRunable(testRunnableJob2,variableQueue);
+            queueUtils.getJob(variableQueue);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         queueUtils.stop(variableQueue);
     }

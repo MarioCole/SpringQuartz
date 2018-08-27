@@ -49,7 +49,7 @@ public class ScheduleJob {
      */
     private Date endDate;
 
-    //private Set<RunnableJob> runnableJobs;
+    private Set<RunnableJob> runnableJobs = new HashSet<>();
 
     @Id
     @GeneratedValue
@@ -124,18 +124,15 @@ public class ScheduleJob {
         this.endDate = endDate;
     }
 
-    /*
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "Schedule_Runnable",
-            joinColumns = @JoinColumn(name = "schedule_id"),
-            inverseJoinColumns = @JoinColumn(name = "runnable_id"))
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "scheduleJob")
     public Set<RunnableJob> getRunnableJobs() {
         return runnableJobs;
     }
 
     public void setRunnableJobs(Set<RunnableJob> runnableJobs) {
         this.runnableJobs = runnableJobs;
-    }*/
+    }
 
     @Override
     public String toString() {

@@ -55,7 +55,7 @@ public class QueueUtils {
 
 
     public static Runnable getRunnableJob(RunnableJob runnableJob){
-        switch (runnableJob.getType()){
+        switch (runnableJob.getRunnable_type()){
             case "test1" :{
                 return new TestRunnableJob1();
             }

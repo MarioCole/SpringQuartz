@@ -4,7 +4,9 @@ import com.supermap.entity.RunnableJob;
 import com.supermap.entity.Variable;
 import com.supermap.job.myjob1.TestRunnableJob1;
 import com.supermap.job.myjob1.TestRunnableJob2;
+import com.supermap.job.myjob1.TestRunnableJob3;
 import org.springframework.stereotype.Service;
+
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -43,33 +45,38 @@ public class OrderdJobUtils {
 
     public void getJob(){
         while (var.isRunning()){
-            try {
-                for (int i = 0; i<var.getQueue().size(); i++){
-                    Runnable job = var.getQueue().poll(5000L,TimeUnit.MILLISECONDS);
+            for (int i = 0; i<1; i++) {
+                if (var.getQueue().size()==1){
+                    Runnable job = var.getQueue().element();
                     System.out.println("取出任务中...");
-                    //Thread.sleep(5000);
-                    if (job != null){
+                    if (job != null) {
                         job.run();
+                        var.getQueue().poll();
                     }
-
                 }
-                if (var.getQueue().size() == 0){
-                    break;
-                }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-                System.out.println(e.toString());
+                //Thread.sleep(5000);
+            }
+            if (var.getQueue().size() == 0){
+                break;
             }
         }
     }
 
-    public static Runnable getRunnableJob(RunnableJob runnableJob){
-        switch (runnableJob.getType()){
+    public int getQueueSize(){
+        int size = var.getQueue().size();
+        return size;
+    }
+
+    public Runnable getRunnableJob(RunnableJob runnableJob){
+        switch (runnableJob.getRunnable_type()){
             case "test1" :{
                 return new TestRunnableJob1();
             }
             case "test2" :{
                 return new TestRunnableJob2();
+            }
+            case "test3" :{
+                return new TestRunnableJob3();
             }
         }
         return null;

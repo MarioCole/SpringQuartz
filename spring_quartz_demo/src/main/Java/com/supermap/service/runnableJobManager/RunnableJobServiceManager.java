@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class RunnableJobService {
+public class RunnableJobServiceManager {
 
     @Autowired
     private QueueUtils queueUtils;

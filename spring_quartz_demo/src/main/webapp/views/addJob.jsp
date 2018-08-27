@@ -33,8 +33,12 @@
             <td><a href="cron.html" target="main">生成cron表达式</a></td>
         </tr>
         <tr>
-            <td>类型</td>
+            <td>定时任务类型</td>
             <td><input type="text" id="jobType" name="jobType"/></td>
+        </tr>
+        <tr>
+            <td>执行任务类型</td>
+            <td><input type="text" name="runnable_type"/></td>
         </tr>
         <tr>
             <td>开始时间</td>

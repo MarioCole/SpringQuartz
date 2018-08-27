@@ -107,7 +107,7 @@ public class ScheduleDaoImpl implements ScheduleDao {
         try {
             Session session = getCurrentSession();
             Transaction transaction = session.beginTransaction();
-            ScheduleJob scheduleJob = get(entity.getId());
+            ScheduleJob scheduleJob = (ScheduleJob) session.load(ScheduleJob.class,entity.getId());
             session.delete(scheduleJob);
             System.out.println("删除成功");
             transaction.commit();

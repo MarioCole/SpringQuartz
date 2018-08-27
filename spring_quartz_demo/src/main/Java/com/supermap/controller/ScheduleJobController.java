@@ -1,8 +1,11 @@
 package com.supermap.controller;
 
+import com.supermap.entity.RunnableJob;
 import com.supermap.entity.ScheduleJob;
 import com.supermap.service.QuartzManager.QuartzMangerService;
+import com.supermap.service.RunnableJobService;
 import com.supermap.service.ScheduleJobService;
+import com.supermap.utils.orderdJobUtils.OrderdJobUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,9 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 public class ScheduleJobController {
@@ -24,6 +25,11 @@ public class ScheduleJobController {
     @Autowired
     private ScheduleJobService scheduleJobService;
 
+    @Autowired
+    private RunnableJobService runnableJobService;
+
+    @Autowired
+    private OrderdJobUtils orderdJobUtils;
 
     /**
      * 新增一个job
@@ -41,6 +47,7 @@ public class ScheduleJobController {
                          @RequestParam(value = "endYear") String endYear,
                          @RequestParam(value = "endMonth") String endMonth,
                          @RequestParam(value = "endDay") String endDay,
+                         @RequestParam(value = "runnable_type") String runnable_type,
                          Map<String,Object> map){
         String startTime = startYear + "-" + startMonth + "-" + startDay;
         String endTime = endYear + "-" + endMonth + "-" + endDay;
@@ -62,8 +69,24 @@ public class ScheduleJobController {
         scheduleJob.setJobType(jobType);
         scheduleJob.setJobState("1");
 
+        Set<RunnableJob> runnableJobs = new HashSet<>();
+        RunnableJob runnableJob = new RunnableJob();
+        runnableJob.setRunnable_type(runnable_type);
+        runnableJob.setRunnable_state("0");
+        runnableJob.setRunnable_starttime(new Date());
+        runnableJob.setScheduleJob(scheduleJob);
+        runnableJobs.add(runnableJob);
+        scheduleJob.setRunnableJobs(runnableJobs);
+
         scheduleJobService.saveScheduleJob(scheduleJob);
+        orderdJobUtils.insertJob(orderdJobUtils.getRunnableJob(runnableJob));
+        orderdJobUtils.start();
         quartzMangerService.addJob(scheduleJob);
+
+        RunnableJob byRunnable_type = runnableJobService.getByRunnable_type(runnable_type);
+        byRunnable_type.setRunnable_endtime(new Date());
+        byRunnable_type.setRunnable_state("1");
+        runnableJobService.updateRunnableJob(byRunnable_type);
         map.put("message","添加成功");
         return "message";
     }
@@ -93,7 +116,6 @@ public class ScheduleJobController {
 
         scheduleJobService.saveScheduleJob(scheduleJob);
         quartzMangerService.runJobOnce(scheduleJob);
-        //quartzManager.runAJobNow(jobName,jobName);
         System.out.println(scheduleJob);
         map.put("message","正在执行");
         return "message";

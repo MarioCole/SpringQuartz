@@ -30,10 +30,10 @@ public class TestOrderJobUtils {
         RunnableJob runnableJob1 = new RunnableJob();
         OrderdJobUtils orderdJobUtils = new OrderdJobUtils();
 
-        runnableJob.setType("test1");
-        runnableJob1.setType("test2");
-        orderdJobUtils.insertJob(OrderdJobUtils.getRunnableJob(runnableJob));
-        orderdJobUtils.insertJob(OrderdJobUtils.getRunnableJob(runnableJob1));
+        runnableJob.setRunnable_type("test1");
+        runnableJob1.setRunnable_type("test2");
+        orderdJobUtils.insertJob(orderdJobUtils.getRunnableJob(runnableJob));
+        orderdJobUtils.insertJob(orderdJobUtils.getRunnableJob(runnableJob1));
         orderdJobUtils.start();
         orderdJobUtils.getJob();
         orderdJobUtils.stop();
