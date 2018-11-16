@@ -23,10 +23,10 @@ import java.util.Map;
 public class JsonDataScratch {
 
     /**
-     * 一级指标数据
+     * 指标数据抓取
      * @param requestUrl
      * @param requestMethod
-     * @return jsonArray
+     * @return JSONArray
      */
     public static JSONArray arrayResponse(String requestUrl, String requestMethod){
 
@@ -69,6 +69,12 @@ public class JsonDataScratch {
         return jsonArray;
     }
 
+    /**
+     * 具体数据抓取
+     * @param requestUrl
+     * @param requestMethod
+     * @return JSONObject
+     */
     public static JSONObject objectResponse(String requestUrl, String requestMethod){
 
         JSONObject jsonObject = null;
@@ -111,6 +117,11 @@ public class JsonDataScratch {
     }
 
 
+    /**
+     * 指标数据格式化
+     * @param jsonArray
+     * @return List
+     */
     public static List<List<Object>> parseArray(String jsonArray){
 
         List<List<Object>> list = new ArrayList<>();
